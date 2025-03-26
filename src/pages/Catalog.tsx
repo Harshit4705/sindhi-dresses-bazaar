@@ -9,14 +9,16 @@ const products: Product[] = Array.from({ length: 60 }, (_, i) => {
   const isBlackSaree = i % 5 === 0; // Every 5th product is a black saree
   const isSaree = i % 2 === 0 || isBlackSaree; // Half are sarees + the black ones
 
-  // Example URLs for saree images - REPLACE THESE WITH YOUR OWN IMAGES
-  // To update: Replace the URLs below with your own image URLs
+  // Updated URLs for saree images with your uploaded images
   const sareeImageUrls = [
-    "/lovable-uploads/201709af-5a53-4730-ac36-96375b1be9e1.png", // This is your uploaded shop sign image
-    "https://images.unsplash.com/photo-1610189042938-ada471f01f23?q=80&w=1000",
-    "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?q=80&w=1000",
-    "https://images.unsplash.com/photo-1622398925373-3f91b1e275f5?q=80&w=1000",
-    "https://images.unsplash.com/photo-1600401434866-6fe61e207dbf?q=80&w=1000"
+    "/lovable-uploads/c4b0b754-92a3-4e2b-bc9b-0e977b80eaa0.png", // Blue saree with gold embellishments
+    "/lovable-uploads/261f8221-ab61-4a0f-82e8-bf57341600bb.png", // Purple saree with pearl detailing
+    "/lovable-uploads/0ccc20b5-b769-4792-b840-eec73835b18e.png", // Red saree with pearl chains
+    "/lovable-uploads/f2ea1415-0085-40b2-813b-1d1d4728d182.png", // Light blue saree with embroidery
+    "/lovable-uploads/92159931-5143-4139-b42c-b971d54c4b7c.png", // Red saree with silver work
+    "/lovable-uploads/17e6453c-01eb-47a2-9bb3-b971a1de0281.png", // Light mint green saree
+    "/lovable-uploads/e0d8103a-4b97-4453-a139-17b7a812878f.png", // Navy blue saree with silver embellishments
+    "/lovable-uploads/6f133e7e-a94c-4686-ad6d-06f6d958a81a.png"  // Silver gray saree with ruffles
   ];
   
   const blackSareeImageUrls = [
@@ -30,34 +32,72 @@ const products: Product[] = Array.from({ length: 60 }, (_, i) => {
     "https://images.unsplash.com/photo-1647891941746-fe1d53ddc7a6?q=80&w=1000"
   ];
 
-  // Select an image URL based on product type
+  // Updated product names based on image content
+  const sareeNames = [
+    "Blue Pochuu Koty RTW Saree D.No.095",
+    "Purple Heavy Necklace Puchoo RTW Saree D.No.092",
+    "Maroon Pochuu Koty RTW Saree D.No.094",
+    "Light Blue Ready To Wear Saree D.No.366",
+    "Red Ready To Wear Saree D.No.359",
+    "Mint Green Celebrity Article D.No.SD09",
+    "Navy Blue Celebrity Article D.No.SD06",
+    "Silver Gray Full Bazuu D.No.SD4"
+  ];
+
+  // Select an image URL and name based on product type
   let imageUrl;
+  let productName;
+  
   if (isBlackSaree) {
     imageUrl = blackSareeImageUrls[i % blackSareeImageUrls.length];
+    productName = `Black Designer Saree - ${i + 1}`;
   } else if (isSaree) {
-    imageUrl = sareeImageUrls[i % sareeImageUrls.length];
+    const index = i % sareeImageUrls.length;
+    imageUrl = sareeImageUrls[index];
+    productName = sareeNames[index];
   } else {
     imageUrl = indoWesternImageUrls[i % indoWesternImageUrls.length];
+    productName = `Indo-Western - ${i + 1}`;
   }
+
+  // Define colors based on the image
+  const getColorForImage = (imgUrl: string) => {
+    if (imgUrl.includes("c4b0b754")) return { name: 'Blue', value: '#3b82f6' };
+    if (imgUrl.includes("261f8221")) return { name: 'Purple', value: '#a855f7' };
+    if (imgUrl.includes("0ccc20b5")) return { name: 'Maroon', value: '#9f1239' };
+    if (imgUrl.includes("f2ea1415")) return { name: 'Light Blue', value: '#7dd3fc' };
+    if (imgUrl.includes("92159931")) return { name: 'Red', value: '#ef4444' };
+    if (imgUrl.includes("17e6453c")) return { name: 'Mint', value: '#a7f3d0' };
+    if (imgUrl.includes("e0d8103a")) return { name: 'Navy', value: '#1e3a8a' };
+    if (imgUrl.includes("6f133e7e")) return { name: 'Silver Gray', value: '#d1d5db' };
+    
+    // Default colors for other images
+    return isBlackSaree 
+      ? { name: 'Black', value: '#171717' } 
+      : ['Red', 'Blue', 'Green', 'Purple', 'Black'][i % 5] === 'Red'
+        ? { name: 'Red', value: '#ef4444' }
+        : ['Red', 'Blue', 'Green', 'Purple', 'Black'][i % 5] === 'Blue'
+          ? { name: 'Blue', value: '#3b82f6' }
+          : ['Red', 'Blue', 'Green', 'Purple', 'Black'][i % 5] === 'Green'
+            ? { name: 'Green', value: '#22c55e' }
+            : ['Red', 'Blue', 'Green', 'Purple', 'Black'][i % 5] === 'Purple'
+              ? { name: 'Purple', value: '#a855f7' }
+              : { name: 'Black', value: '#171717' };
+  };
+
+  const color = getColorForImage(imageUrl);
 
   return {
     id: i + 1,
-    name: isBlackSaree 
-      ? `Black Saree - ${i + 1}` 
-      : isSaree 
-        ? `Saree - ${i + 1}` 
-        : `Indo-Western - ${i + 1}`,
-    price: Math.floor(Math.random() * 2000) + 500,
+    name: productName,
+    price: Math.floor(Math.random() * 2000) + 1500, // Increased price range for premium sarees
     image: imageUrl,
-    colors: [{
-      name: isBlackSaree ? 'Black' : ['Red', 'Blue', 'Green', 'Purple', 'Black'][i % 5],
-      value: isBlackSaree ? '#171717' : ['#ef4444', '#3b82f6', '#22c55e', '#a855f7', '#171717'][i % 5]
-    }]
+    colors: [color]
   };
 });
 
-// Updated categories
-const categories = ['All', 'Sarees', 'Black Sarees', 'Indo-Western'];
+// Updated categories to include RTW Sarees as a new category
+const categories = ['All', 'Sarees', 'Black Sarees', 'Ready To Wear', 'Indo-Western'];
 
 const Catalog = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -87,6 +127,11 @@ const Catalog = () => {
       result = result.filter(product => 
         product.name.toLowerCase().includes('black saree')
       );
+    } else if (selectedCategory === 'Ready To Wear') {
+      result = result.filter(product => 
+        product.name.toLowerCase().includes('ready to wear') ||
+        product.name.toLowerCase().includes('rtw')
+      );
     } else if (selectedCategory === 'Indo-Western') {
       result = result.filter(product => 
         product.name.toLowerCase().includes('indo-western')
@@ -109,7 +154,7 @@ const Catalog = () => {
         <div className="text-center">
           <h1 className="section-title text-sindhi-900">Product Catalog</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Explore our premium collection of Sarees and Indo-Western garments. Quality designs at competitive prices.
+            Explore our premium collection of Designer Sarees and Indo-Western garments. Authentic Sindhi designs at competitive prices.
           </p>
         </div>
         
