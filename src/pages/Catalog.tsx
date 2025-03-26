@@ -3,22 +3,30 @@ import { useState, useEffect } from 'react';
 import ProductCard, { Product } from '@/components/ProductCard';
 import { Search } from 'lucide-react';
 
-// Fake product data
-const products: Product[] = Array.from({ length: 60 }, (_, i) => ({
-  id: i + 1,
-  name: `Women's ${['Dress', 'Suit', 'Saree', 'Kurti', 'Lehenga', 'Blouse'][i % 6]} - ${i + 1}`,
-  price: Math.floor(Math.random() * 2000) + 500,
-  image: `https://source.unsplash.com/random/300x400/?dress,women,clothing&sig=${i}`,
-  colors: [
-    { name: 'Red', value: '#ef4444' },
-    { name: 'Blue', value: '#3b82f6' },
-    { name: 'Green', value: '#22c55e' },
-    { name: 'Purple', value: '#a855f7' },
-    { name: 'Black', value: '#171717' },
-  ].sort(() => Math.random() - 0.5).slice(0, Math.floor(Math.random() * 3) + 2)
-}));
+// Updated product data focusing on Sarees and Indo-Western
+const products: Product[] = Array.from({ length: 60 }, (_, i) => {
+  // Determine if this is a Saree or Indo-Western product
+  const isBlackSaree = i % 5 === 0; // Every 5th product is a black saree
+  const isSaree = i % 2 === 0 || isBlackSaree; // Half are sarees + the black ones
 
-const categories = ['All', 'Dresses', 'Suits', 'Sarees', 'Kurtis', 'Lehengas', 'Blouses'];
+  return {
+    id: i + 1,
+    name: isBlackSaree 
+      ? `Black Saree - ${i + 1}` 
+      : isSaree 
+        ? `Saree - ${i + 1}` 
+        : `Indo-Western - ${i + 1}`,
+    price: Math.floor(Math.random() * 2000) + 500,
+    image: `https://source.unsplash.com/random/300x400/?${isBlackSaree ? 'black,saree' : isSaree ? 'saree' : 'indo-western'}&sig=${i}`,
+    colors: [{
+      name: isBlackSaree ? 'Black' : ['Red', 'Blue', 'Green', 'Purple', 'Black'][i % 5],
+      value: isBlackSaree ? '#171717' : ['#ef4444', '#3b82f6', '#22c55e', '#a855f7', '#171717'][i % 5]
+    }]
+  };
+});
+
+// Updated categories
+const categories = ['All', 'Sarees', 'Black Sarees', 'Indo-Western'];
 
 const Catalog = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,9 +47,18 @@ const Catalog = () => {
     let result = [...products];
     
     // Apply category filter
-    if (selectedCategory !== 'All') {
+    if (selectedCategory === 'Sarees') {
       result = result.filter(product => 
-        product.name.toLowerCase().includes(selectedCategory.toLowerCase().slice(0, -1))
+        product.name.toLowerCase().includes('saree') && 
+        !product.name.toLowerCase().includes('black saree')
+      );
+    } else if (selectedCategory === 'Black Sarees') {
+      result = result.filter(product => 
+        product.name.toLowerCase().includes('black saree')
+      );
+    } else if (selectedCategory === 'Indo-Western') {
+      result = result.filter(product => 
+        product.name.toLowerCase().includes('indo-western')
       );
     }
     
@@ -61,7 +78,7 @@ const Catalog = () => {
         <div className="text-center">
           <h1 className="section-title text-sindhi-900">Product Catalog</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Explore our premium collection of wholesale garments for women. Quality designs at competitive prices.
+            Explore our premium collection of Sarees and Indo-Western garments. Quality designs at competitive prices.
           </p>
         </div>
         

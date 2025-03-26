@@ -17,7 +17,8 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  // Fixed selected color to the first (and only) color
+  const selectedColor = product.colors[0];
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const { addToCart } = useCart();
@@ -35,7 +36,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       
       toast({
         title: "Added to cart",
-        description: `${product.name} (${selectedColor.name}) × ${quantity}`,
+        description: `${product.name} × ${quantity}`,
       });
       
       setIsAdding(false);
@@ -64,33 +65,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <p className="mt-1 text-lg font-semibold text-sindhi-800">₹{product.price.toLocaleString()}</p>
         
         <div className="mt-4 space-y-4">
-          {/* Color Selection */}
-          <div>
-            <label className="block text-sm text-muted-foreground mb-2">Color</label>
-            <div className="flex flex-wrap gap-2">
-              {product.colors.map((color) => (
-                <button
-                  key={color.value}
-                  type="button"
-                  onClick={() => setSelectedColor(color)}
-                  className={`w-8 h-8 rounded-full relative flex items-center justify-center transition-all ${
-                    selectedColor.value === color.value
-                      ? 'ring-2 ring-primary ring-offset-2'
-                      : ''
-                  }`}
-                  style={{ backgroundColor: color.value }}
-                  aria-label={`Select color ${color.name}`}
-                >
-                  {selectedColor.value === color.value && (
-                    <span className="text-white">
-                      <Check size={14} />
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-          
           {/* Quantity Input */}
           <div>
             <label className="block text-sm text-muted-foreground mb-2">Quantity</label>
