@@ -35,8 +35,8 @@ const Index = () => {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
-            alt="Elegant clothes" 
+            src="/lovable-uploads/201709af-5a53-4730-ac36-96375b1be9e1.png" 
+            alt="Sindhi Dresses Shop Sign" 
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/60 to-white/90" />
