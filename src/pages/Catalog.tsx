@@ -9,6 +9,37 @@ const products: Product[] = Array.from({ length: 60 }, (_, i) => {
   const isBlackSaree = i % 5 === 0; // Every 5th product is a black saree
   const isSaree = i % 2 === 0 || isBlackSaree; // Half are sarees + the black ones
 
+  // Example URLs for saree images - REPLACE THESE WITH YOUR OWN IMAGES
+  // To update: Replace the URLs below with your own image URLs
+  const sareeImageUrls = [
+    "/lovable-uploads/201709af-5a53-4730-ac36-96375b1be9e1.png", // This is your uploaded shop sign image
+    "https://images.unsplash.com/photo-1610189042938-ada471f01f23?q=80&w=1000",
+    "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?q=80&w=1000",
+    "https://images.unsplash.com/photo-1622398925373-3f91b1e275f5?q=80&w=1000",
+    "https://images.unsplash.com/photo-1600401434866-6fe61e207dbf?q=80&w=1000"
+  ];
+  
+  const blackSareeImageUrls = [
+    "https://images.unsplash.com/photo-1614886137042-41137904df67?q=80&w=1000",
+    "https://images.unsplash.com/photo-1671725501830-71388a0bbec6?q=80&w=1000"
+  ];
+  
+  const indoWesternImageUrls = [
+    "https://images.unsplash.com/photo-1610190209529-32de27f3b9c3?q=80&w=1000",
+    "https://images.unsplash.com/photo-1611310424006-64e5ffe34e1a?q=80&w=1000",
+    "https://images.unsplash.com/photo-1647891941746-fe1d53ddc7a6?q=80&w=1000"
+  ];
+
+  // Select an image URL based on product type
+  let imageUrl;
+  if (isBlackSaree) {
+    imageUrl = blackSareeImageUrls[i % blackSareeImageUrls.length];
+  } else if (isSaree) {
+    imageUrl = sareeImageUrls[i % sareeImageUrls.length];
+  } else {
+    imageUrl = indoWesternImageUrls[i % indoWesternImageUrls.length];
+  }
+
   return {
     id: i + 1,
     name: isBlackSaree 
@@ -17,7 +48,7 @@ const products: Product[] = Array.from({ length: 60 }, (_, i) => {
         ? `Saree - ${i + 1}` 
         : `Indo-Western - ${i + 1}`,
     price: Math.floor(Math.random() * 2000) + 500,
-    image: `https://source.unsplash.com/random/300x400/?${isBlackSaree ? 'black,saree' : isSaree ? 'saree' : 'indo-western'}&sig=${i}`,
+    image: imageUrl,
     colors: [{
       name: isBlackSaree ? 'Black' : ['Red', 'Blue', 'Green', 'Purple', 'Black'][i % 5],
       value: isBlackSaree ? '#171717' : ['#ef4444', '#3b82f6', '#22c55e', '#a855f7', '#171717'][i % 5]
